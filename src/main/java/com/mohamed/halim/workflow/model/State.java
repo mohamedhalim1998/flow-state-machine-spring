@@ -20,6 +20,8 @@ public class State {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private boolean initial;
+    private boolean end;
     @OneToMany(mappedBy = "from")
     private Set<Transition> transitions;
 }
