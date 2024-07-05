@@ -1,5 +1,6 @@
 package com.mohamed.halim.workflow.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,16 +16,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Transition {
+public class Transition implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "from_id" , nullable = false)
+    @JoinColumn(name = "from_id", nullable = false)
     private State from;
-//    @ManyToOne
-//    @JoinColumn(name = "to_id", nullable = false)
-//    private State to;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "to_id", nullable = false)
+    private State to;
+    @OneToOne(cascade = CascadeType.ALL)
     private Event event;
 }
