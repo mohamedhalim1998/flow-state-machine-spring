@@ -5,11 +5,9 @@ import com.mohamed.halim.workflow.model.State;
 import com.mohamed.halim.workflow.model.Transition;
 import com.mohamed.halim.workflow.repo.StateRepository;
 import com.mohamed.halim.workflow.repo.TransitionRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Scope;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.StateMachineBuilder;
 
@@ -18,11 +16,12 @@ import java.util.List;
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class FlowStateConfig {
-    @Bean
-    @Scope("prototype")
-    @Lazy
-    public StateMachine<State, Event> flowMachine(StateRepository stateRepository, TransitionRepository transitionRepository) throws Exception {
+    private final StateRepository stateRepository;
+    private final TransitionRepository transitionRepository;
+
+    public StateMachine<State, Event> flowMachine() throws Exception {
         var builder = StateMachineBuilder.<State, Event>builder();
         var statesConfig = builder.configureStates();
         List<State> states = stateRepository.findAll();
@@ -38,7 +37,7 @@ public class FlowStateConfig {
         var transitionsConfig = builder.configureTransitions();
         var transitions = transitionRepository.findAll();
         for (Transition transition : transitions) {
-            transitionsConfig.withExternal().source(transition.getFrom()).target(transition.getFrom())
+            transitionsConfig.withExternal().source(transition.getFrom()).target(transition.getTo())
                     .event(transition.getEvent());
         }
 
