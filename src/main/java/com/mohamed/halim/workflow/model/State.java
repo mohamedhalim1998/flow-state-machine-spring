@@ -30,4 +30,13 @@ public class State implements BaseEntity {
     @OneToMany(mappedBy = "from")
     @JsonIgnore
     private List<Transition> transitions;
+
+    public State(String name, boolean initial, boolean end) {
+        this.name = name;
+        this.initial = initial;
+        this.end = end;
+    }
+    public State(String name) {
+        this.name = name;
+    }
 }

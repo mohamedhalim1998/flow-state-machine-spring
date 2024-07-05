@@ -30,4 +30,11 @@ public class Transition implements BaseEntity {
     private State to;
     @OneToOne(cascade = CascadeType.ALL)
     private Event event;
+
+    public Transition(State from, State to, String event) {
+        this.from = from;
+        this.to = to;
+        this.event = new Event();
+        this.event.setName(event);
+    }
 }
